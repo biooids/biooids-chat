@@ -62,18 +62,18 @@ export const signUp = async (req, res, next) => {
 };
 
 export const logIn = async (req, res, next) => {
-  const { emailOrPhone, password } = req.body;
+  const { userName, password } = req.body;
   console.log("data from req.body", req.body);
 
-  if (!emailOrPhone || !password || emailOrPhone === "" || password === "") {
+  if (!userName || !password) {
     next(errorHandler(400, "Empty fields. All fields are required"));
     return;
   }
 
   try {
-    const validUser = await User.findOne({ emailOrPhone });
+    const validUser = await User.findOne({ userName });
     if (!validUser) {
-      next(errorHandler(404, "user not found"));
+      next(errorHandler(404, "user name not found"));
       return;
     }
 
@@ -86,9 +86,6 @@ export const logIn = async (req, res, next) => {
     const token = jwt.sign(
       {
         id: validUser._id,
-        isDeveloper: validUser.isDeveloper,
-        isLeader: validUser.isLeader,
-        isAdmin: validUser.isAdmin,
       },
       process.env.JWT_SECRET,
       {
