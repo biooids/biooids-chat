@@ -21,9 +21,32 @@ function Home() {
           </div>
         </section>
 
-        <section className="border-2 border-cyan-700 rounded-lg w-[70%] h-full">
-          <div className=" border-cyan-700 border-b-2 p-3">chat</div>
-          <div></div>
+        <section className="border-2 border-cyan-700 rounded-lg w-[70%] h-full flex flex-col gap- ">
+          <div className=" border-cyan-700 border-b-2 p-3 ">chat</div>
+
+          <section className="bg-slate-70 rounded-lg  flex-grow overflow-x-auto p-3">
+            <ul className="flex flex-col gap-3 ">
+              <li className="bg-black  flex  gap-3 justify-end">
+                <div className="p-3 flex flex-col gap-1 w-[300px] bg-slate-700 rounded-lg">
+                  <p>DNAprogrammer</p>
+                  <p className="">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Fuga sint, maxime animi, harum hic aperiam voluptate dicta
+                    quo debitis assumenda eligendi aspernatur voluptates.
+                    Sapiente, voluptate minima mollitia voluptatibus ducimus
+                    repellat.
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </section>
+
+          <form className="flex justify-center items-center gap-3  p-3">
+            <input type="text" className="w-full p-3 bg-slate-700 rounded-lg" />
+            <button type="submit" className="bg-slate-700 p-3 rounded-lg">
+              send
+            </button>
+          </form>
         </section>
       </div>
     </section>
