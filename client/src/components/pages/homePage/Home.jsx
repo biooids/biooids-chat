@@ -13,10 +13,10 @@ function Home() {
               <li>Chat</li>
             </ul>
           </div>
-
+          <p className="text-center">Active users</p>
           <div className="flex flex-col gap-3 p-3  ">
             <div className="p-3 border-cyan-700 rounded-lg border-2 ">
-              <p>All </p>
+              <p>DNAprogrammer </p>
             </div>
           </div>
         </section>
