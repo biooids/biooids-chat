@@ -1,11 +1,14 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
+import NavBar from "./NavBar";
 
 function MainLayout() {
   return (
     <div>
-      <h1>Welcome to biooids Chat</h1>
-      <Outlet />
+      <NavBar />
+      <section>
+        <Outlet />
+      </section>
     </div>
   );
 }
