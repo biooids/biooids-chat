@@ -25,7 +25,7 @@ function Home() {
           <div className=" border-cyan-700 border-b-2 p-3 ">chat</div>
 
           <section className="bg-slate-70 rounded-lg  flex-grow overflow-x-auto p-3">
-            <ul className="flex flex-col gap-3 ">
+            {/* <ul className="flex flex-col gap-3 ">
               <li className="bg-black  flex  gap-3 justify-end">
                 <div className="p-3 flex flex-col gap-1 w-[300px] bg-slate-700 rounded-lg">
                   <p>DNAprogrammer</p>
@@ -38,7 +38,25 @@ function Home() {
                   </p>
                 </div>
               </li>
-            </ul>
+            </ul> */}
+
+            <div className="chat chat-start">
+              <div className="chat-header">
+                Obi-Wan Kenobi
+                <time className="text-xs opacity-50">2 hours ago</time>
+              </div>
+              <div className="chat-bubble">You were the Chosen One!</div>
+              <div className="chat-footer opacity-50">Seen</div>
+            </div>
+
+            <div className="chat chat-end">
+              <div className="chat-header">
+                Obi-Wan Kenobi
+                <time className="text-xs opacity-50">2 hour ago</time>
+              </div>
+              <div className="chat-bubble">I loved you.</div>
+              <div className="chat-footer opacity-50">Delivered</div>
+            </div>
           </section>
 
           <form className="flex justify-center items-center gap-3  p-3">
