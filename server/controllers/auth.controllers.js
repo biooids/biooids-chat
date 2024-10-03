@@ -7,7 +7,6 @@ export const signUp = async (req, res, next) => {
   console.log("data from req.body :", req.body);
   const { userName, password } = req.body;
 
-  // Check if fields are empty
   if (!userName || !password) {
     return next(
       errorHandler(
@@ -22,6 +21,23 @@ export const signUp = async (req, res, next) => {
       errorHandler(
         400,
         "Username exceeds the maximum character limit of 20 characters."
+      )
+    );
+  }
+  if (userName.length < 3) {
+    return next(
+      errorHandler(
+        400,
+        "Username must be at least 3 characters long. Please try again."
+      )
+    );
+  }
+
+  if (password.length < 6) {
+    return next(
+      errorHandler(
+        400,
+        "Password must be at least 6 characters long. Please try again."
       )
     );
   }

@@ -8,8 +8,11 @@ export const themeSlice = createSlice({
   name: "theme",
   initialState,
   reducers: {
-    toggleTheme: (state) =>
-      state.theme === "dark" ? state.theme === "light" : state.theme === "dark",
+    toggleTheme: (state) => {
+      console.log("Theme toggled"); // Add this line to verify
+
+      state.theme = state.theme === "dark" ? "light" : "dark"; // Correct toggling
+    },
   },
 });
 

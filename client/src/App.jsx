@@ -3,6 +3,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainLayout from "./components/mainComp/mainLayout";
 import Home from "./components/pages/homePage/Home";
 import NotFound from "./components/mainComp/NotFound";
+import Auth from "./components/pages/authPage/Auth";
+import SignUp from "./components/pages/authPage/SignUp";
+import LogIn from "./components/pages/authPage/LogIn";
 
 function App() {
   const router = createBrowserRouter([
@@ -12,7 +15,14 @@ function App() {
       errorElement: <NotFound />,
       children: [
         { index: true, element: <Home /> },
-        { path: "about", element: <div>About</div> },
+        {
+          path: "auth",
+          element: <Auth />,
+          children: [
+            { index: true, element: <LogIn /> },
+            { path: "sign-up", element: <SignUp /> },
+          ],
+        },
         { path: "contact", element: <div>Contact</div> },
       ],
     },
