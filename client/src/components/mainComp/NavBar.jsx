@@ -30,6 +30,7 @@ function NavBar() {
         >
           Testing
         </NavLink>
+
         {currentUser ? (
           currentUser.user.userName
         ) : (
