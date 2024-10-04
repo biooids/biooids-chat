@@ -1,11 +1,12 @@
 import express from "express";
+import connectMongoDB from "./config/db/mongoDB/mongoDB.js";
+import { errorMiddleWare } from "./config/middleware/errorMiddleWare.js";
+
 import cookieParser from "cookie-parser";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { Server } from "socket.io";
 
 import authRoutes from "../server/routes/auth.routes.js";
-
-import { Server } from "socket.io"; // Import Socket.IO
 
 dotenv.config();
 const app = express();
@@ -13,28 +14,11 @@ const PORT = 3000;
 
 app.use(express.json());
 app.use(cookieParser());
-
-mongoose
-  .connect(process.env.MONGO)
-  .then(() => {
-    console.log("MongoDB Atlas connected");
-  })
-  .catch((error) => {
-    console.log(
-      "MongoDB Atlas failed to connect due to error :",
-      error.message || error
-    );
-  });
+connectMongoDB();
 
 app.use("/api/auth", authRoutes);
 
-app.use((error, req, res, next) => {
-  const statusCode = error.status || 500;
-  const message =
-    `action failed due to : ${error.message}` ||
-    "action failed due to : internal server error";
-  res.status(statusCode).json({ success: false, statusCode, message });
-});
+app.use(errorMiddleWare);
 
 const server = app.listen(PORT, () => {
   const host = server.address().address;
@@ -52,12 +36,15 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log("A user connected");
+  io.emit("userConnected", {
+    name: "X",
+    content: "User connected",
+  });
 
   // Listen for a custom event from the client
   socket.on("message", (data) => {
-    console.log("Message received:", data);
     // Respond back to the client
-    socket.emit("serverMessage", `Received this message: ${data}`);
+    io.emit("serverMessage", data);
   });
 
   // Handle disconnection
