@@ -22,6 +22,14 @@ function NavBar() {
         >
           Home
         </NavLink>
+        <NavLink
+          to="testing"
+          className={({ isActive }) =>
+            ` ${isActive ? "text-cyan-300 underline" : ""}`
+          }
+        >
+          Testing
+        </NavLink>
         {currentUser ? (
           currentUser.user.userName
         ) : (

@@ -6,6 +6,7 @@ import NotFound from "./components/mainComp/NotFound";
 import Auth from "./components/pages/authPage/Auth";
 import SignUp from "./components/pages/authPage/SignUp";
 import LogIn from "./components/pages/authPage/LogIn";
+import Testing from "./components/mainComp/Testing";
 
 function App() {
   const router = createBrowserRouter([
@@ -23,7 +24,7 @@ function App() {
             { path: "sign-up", element: <SignUp /> },
           ],
         },
-        { path: "contact", element: <div>Contact</div> },
+        { path: "testing", element: <Testing /> },
       ],
     },
   ]);
