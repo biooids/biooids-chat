@@ -4,9 +4,10 @@ import { errorMiddleWare } from "./config/middleware/errorMiddleWare.js";
 
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import { Server } from "socket.io";
 
 import authRoutes from "../server/routes/auth.routes.js";
+import { Server } from "socket.io";
+import { joinTestingRoom, sendMessage } from "./config/socket/socket.js";
 
 dotenv.config();
 const app = express();
@@ -16,8 +17,10 @@ app.use(express.json());
 app.use(cookieParser());
 connectMongoDB();
 
+// routes end points
 app.use("/api/auth", authRoutes);
 
+//error middle ware
 app.use(errorMiddleWare);
 
 const server = app.listen(PORT, () => {
@@ -26,29 +29,21 @@ const server = app.listen(PORT, () => {
   console.log(`Server is running at http://${host}:${port}`);
 });
 
-const io = new Server(server, {
+export const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Allow connections from your front-end, adjust as necessary
-    methods: ["GET", "POST"], // Allowed HTTP methods
-    credentials: true, // Allow cookies
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
 io.on("connection", (socket) => {
-  console.log("A user connected");
-  io.emit("userConnected", {
-    name: "X",
-    content: "User connected",
-  });
+  console.log(`User connected: ${socket.id}`);
 
-  // Listen for a custom event from the client
-  socket.on("message", (data) => {
-    // Respond back to the client
-    io.emit("serverMessage", data);
-  });
+  joinTestingRoom(socket, io);
+  sendMessage(socket, io);
 
-  // Handle disconnection
   socket.on("disconnect", () => {
-    console.log("User disconnected");
+    console.log(`User disconnected: ${socket.id}`);
   });
 });

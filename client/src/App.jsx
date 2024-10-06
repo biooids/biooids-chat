@@ -8,6 +8,7 @@ import SignUp from "./components/pages/authPage/SignUp";
 import LogIn from "./components/pages/authPage/LogIn";
 
 import Testing from "./components/mainComp/Testing";
+import Authenticated from "./components/mainComp/Authenticated";
 
 function App() {
   const router = createBrowserRouter([
@@ -26,7 +27,10 @@ function App() {
           ],
         },
 
-        { path: "testing", element: <Testing /> },
+        {
+          element: <Authenticated />,
+          children: [{ path: "testing", element: <Testing /> }],
+        },
 
         { path: "contact", element: <div>Contact</div> },
       ],
