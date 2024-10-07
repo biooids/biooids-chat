@@ -8,8 +8,9 @@ import dotenv from "dotenv";
 import { Server } from "socket.io";
 import { joinTestingRoom } from "./config/socket/socket.js";
 
-import authRoutes from "../server/routes/auth.routes.js";
-import userInGeneralRoomRoutes from "./routes/room.routes.js";
+import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes.js";
+import chatRoutes from "./routes/chat.routes.js";
 
 dotenv.config();
 const app = express();
@@ -21,7 +22,8 @@ connectMongoDB();
 
 // routes end points
 app.use("/api/auth", authRoutes);
-app.use("/api/chat", userInGeneralRoomRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/chat", chatRoutes);
 
 //error middle ware
 app.use(errorMiddleWare);
