@@ -9,6 +9,8 @@ import LogIn from "./components/pages/authPage/LogIn";
 
 import Testing from "./components/mainComp/Testing";
 import Authenticated from "./components/mainComp/Authenticated";
+import GeneralRoom from "./components/mainComp/GeneralRoom";
+import JoinedGeneralRoom from "./components/mainComp/JoinedGeneralRoom";
 
 function App() {
   const router = createBrowserRouter([
@@ -26,10 +28,10 @@ function App() {
             { path: "sign-up", element: <SignUp /> },
           ],
         },
-
+        { path: "testing", element: <Testing /> },
         {
-          element: <Authenticated />,
-          children: [{ path: "testing", element: <Testing /> }],
+          element: <JoinedGeneralRoom />,
+          children: [{ path: "generalRoom", element: <GeneralRoom /> }],
         },
 
         { path: "contact", element: <div>Contact</div> },

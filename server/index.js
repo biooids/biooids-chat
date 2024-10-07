@@ -5,9 +5,11 @@ import { errorMiddleWare } from "./config/middleware/errorMiddleWare.js";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
-import authRoutes from "../server/routes/auth.routes.js";
 import { Server } from "socket.io";
-import { joinTestingRoom, sendMessage } from "./config/socket/socket.js";
+import { joinTestingRoom } from "./config/socket/socket.js";
+
+import authRoutes from "../server/routes/auth.routes.js";
+import userInGeneralRoomRoutes from "./routes/user.in.general.room.routes.js";
 
 dotenv.config();
 const app = express();
@@ -19,6 +21,7 @@ connectMongoDB();
 
 // routes end points
 app.use("/api/auth", authRoutes);
+app.use("/api/generalRoom", userInGeneralRoomRoutes);
 
 //error middle ware
 app.use(errorMiddleWare);
@@ -41,7 +44,7 @@ io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
 
   joinTestingRoom(socket, io);
-  sendMessage(socket, io);
+  // sendMessage(socket, io);
 
   socket.on("disconnect", () => {
     console.log(`User disconnected: ${socket.id}`);

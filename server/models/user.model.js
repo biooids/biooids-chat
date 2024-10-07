@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    joinedGeneralRoom: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timeStamp: true }
 );

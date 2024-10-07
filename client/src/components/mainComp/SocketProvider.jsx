@@ -12,7 +12,7 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socketIo = io("http://localhost:3000"); // Connect to your server
+    const socketIo = io("http://localhost:3000");
     setSocket(socketIo);
 
     // Cleanup on unmount

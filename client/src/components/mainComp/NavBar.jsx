@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import { toggleTheme } from "../../app/features/theme/themeSlice";
 import { FaMoon } from "react-icons/fa";
 import { IoSunny } from "react-icons/io5";
-import { useSocket } from "./SocketProvider";
 
 function NavBar() {
   const { currentUser } = useSelector((state) => state.user);
