@@ -9,7 +9,7 @@ import { Server } from "socket.io";
 import { joinTestingRoom } from "./config/socket/socket.js";
 
 import authRoutes from "../server/routes/auth.routes.js";
-import userInGeneralRoomRoutes from "./routes/user.in.general.room.routes.js";
+import userInGeneralRoomRoutes from "./routes/room.routes.js";
 
 dotenv.config();
 const app = express();
@@ -21,7 +21,7 @@ connectMongoDB();
 
 // routes end points
 app.use("/api/auth", authRoutes);
-app.use("/api/generalRoom", userInGeneralRoomRoutes);
+app.use("/api/chat", userInGeneralRoomRoutes);
 
 //error middle ware
 app.use(errorMiddleWare);

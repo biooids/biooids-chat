@@ -25,7 +25,6 @@ function Testing() {
     if (socket) {
       socket.on("userJoinedGeneralRoom", (data) => {
         saveUserInGeneralRoom(data); // Save user in the general room
-        getUsersInGeneralRoom(); // Get all users in the general room
         setIsJoining(false); // Re-enable button clicks
       });
 
@@ -54,15 +53,6 @@ function Testing() {
         navigate("/generalRoom");
       }
       dispatch(actionSuccess(data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const getUsersInGeneralRoom = async () => {
-    try {
-      const res = await fetch("/api/generalRoom/getUsersInGeneralRoom");
-      const data = await res.json();
-      console.log(data);
     } catch (error) {
       console.log(error);
     }

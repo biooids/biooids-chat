@@ -11,9 +11,9 @@ function NavBar() {
   const dispatch = useDispatch();
 
   return (
-    <nav className="p-5 flex justify-between items-center border-b-2 border-cyan-700">
+    <nav className="p-5 flex justify-between items-center border-b-2 border-cyan-700 ">
       <span>biooids Chat</span>
-      <ul className="flex gap-3">
+      <ul className="flex gap-3 items-center">
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -23,16 +23,25 @@ function NavBar() {
           Home
         </NavLink>
         <NavLink
-          to="testing"
+          to="generalRoom"
           className={({ isActive }) =>
             ` ${isActive ? "text-cyan-300 underline" : ""}`
           }
         >
-          Testing
+          generalRoom
         </NavLink>
 
         {currentUser ? (
-          currentUser.user.userName
+          <div className="flex gap-3 items-center">
+            <p>{currentUser.user.userName}</p>
+            <div className="h-[50px] w-[50px]">
+              <img
+                src={currentUser.user.profilePicture}
+                alt=""
+                className="w-full h-full rounded-full"
+              />
+            </div>
+          </div>
         ) : (
           <NavLink
             to="auth"

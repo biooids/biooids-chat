@@ -7,7 +7,7 @@ function JoinedGeneralRoom() {
   return currentUser && currentUser.user.joinedGeneralRoom ? (
     <Outlet />
   ) : (
-    <Navigate to="/testing" />
+    <Navigate to="/" />
   );
 }
 

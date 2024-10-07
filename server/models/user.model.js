@@ -14,9 +14,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    joinedGeneralRoom: {
-      type: Boolean,
-      default: false,
+    profilePicture: {
+      type: String,
+      default:
+        "https://firebasestorage.googleapis.com/v0/b/soft-biooid.appspot.com/o/xi-biooid.jpg?alt=media&token=cc88392f-090c-4361-a8a5-d5dab8d7d846",
     },
   },
   { timeStamp: true }
