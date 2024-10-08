@@ -8,7 +8,7 @@ export const verifyUserUtil = (req, res, next) => {
     return next(errorUtil(401, "Unauthorized access"));
   }
 
-  jwt.verify(token, process.env.JWT_SECRETE, (err, user) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       return next(errorUtil(401, "Unauthorized access"));
     }

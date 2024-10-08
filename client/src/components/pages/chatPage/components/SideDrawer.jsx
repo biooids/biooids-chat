@@ -35,6 +35,7 @@ function SideDrawer() {
     <div>
       <div className="drawer">
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+
         <div className="drawer-content">
           {/* Page content here */}
           <label
@@ -51,6 +52,12 @@ function SideDrawer() {
             className="drawer-overlay"
           ></label>
           <aside className="menu bg-base-200 text-base-content min-h-full w-80 p-4 flex flex-col gap-3">
+            <label
+              htmlFor="my-drawer"
+              className="btn bg-black mt-3 mb-3 drawer-button"
+            >
+              Close X
+            </label>
             <form action="" onSubmit={handleSearch}>
               <label className="input input-bordered flex items-center gap-2">
                 <input
@@ -81,15 +88,20 @@ function SideDrawer() {
                 {loading ? "searching..." : "search"}
               </button>
             </form>
-            <ul className="   flex flex-col gap-3">
+            <ul className="flex flex-col gap-3">
               <p>users found:</p>
               {searchResult?.map((user) => (
-                <SearchCards
+                <label
                   key={user._id}
-                  userId={user._id}
-                  profilePicture={user.profilePicture}
-                  userName={user.userName}
-                />
+                  htmlFor="my-drawer"
+                  className="drawer-button"
+                >
+                  <SearchCards
+                    userId={user._id}
+                    profilePicture={user.profilePicture}
+                    userName={user.userName}
+                  />
+                </label>
               ))}
             </ul>
           </aside>

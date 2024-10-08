@@ -3,13 +3,19 @@ import Chat from "../models/chat.model.js";
 import User from "../models/user.model.js";
 export const accessChat = async (req, res, next) => {
   const { userId } = req.body;
+  console.log("data from req body", req.body);
+
   if (!userId) {
     next(errorUtil(400, "userId not sent with request"));
   }
+  // if (req.user.id.toString() === userId) {
+  //   return next(errorUtil(400, "Cannot create a chat with yourself"));
+  // }
+
   let isChat = await Chat.find({
     isGroupChat: false,
     $and: [
-      { users: { $elemMatch: { $eq: req.user._id } } },
+      { users: { $elemMatch: { $eq: req.user.id } } },
       { users: { $elemMatch: { $eq: userId } } },
     ],
   })
@@ -27,7 +33,7 @@ export const accessChat = async (req, res, next) => {
     let chatData = {
       chatName: "sender",
       isGroupChat: false,
-      users: [req.user._id, userId],
+      users: [req.user.id, userId],
     };
     try {
       const createdChat = await Chat.create(chatData);
@@ -46,7 +52,7 @@ export const accessChat = async (req, res, next) => {
 
 export const fetchChats = async (req, res, next) => {
   try {
-    Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
+    Chat.find({ users: { $elemMatch: { $eq: req.user.id } } })
       .populate("users", "-password")
       .populate("groupAdmin", "-password")
       .populate("latestMessage")
@@ -57,7 +63,9 @@ export const fetchChats = async (req, res, next) => {
           select: "userName profilePicture",
         });
 
-        res.status(200).send(results);
+        res
+          .status(200)
+          .send({ success: true, message: "chats fetched", results });
       });
   } catch (error) {
     next(errorUtil(500, error.message));

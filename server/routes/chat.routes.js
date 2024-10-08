@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 
 router.post("/access-chat", verifyUserUtil, accessChat);
-router.post("/fetch-chats", verifyUserUtil, fetchChats);
+router.get("/fetch-chats", verifyUserUtil, fetchChats);
 router.post("/create-group", verifyUserUtil, createGroup);
 router.put("/rename-group", verifyUserUtil, renameGroup);
 router.put("/add-into-group", verifyUserUtil, addToGroup);
