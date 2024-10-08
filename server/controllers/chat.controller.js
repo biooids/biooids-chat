@@ -28,7 +28,7 @@ export const accessChat = async (req, res, next) => {
   });
 
   if (isChat.length > 0) {
-    res.send(isChat[0]);
+    res.send({ success: true, message: "chats accessed", results: isChat[0] });
   } else {
     let chatData = {
       chatName: "sender",
@@ -43,7 +43,9 @@ export const accessChat = async (req, res, next) => {
         "-password"
       );
 
-      res.status(200).json(FullChat);
+      res
+        .status(200)
+        .json({ success: true, message: "chats accessed", results: FullChat });
     } catch (error) {
       next(errorUtil(500, error.message));
     }

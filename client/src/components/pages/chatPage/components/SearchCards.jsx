@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
-function SearchCards({ userId, profilePicture, userName }) {
+function SearchCards({ userId, profilePicture, userName, setChats }) {
   const { selectedChat, setSelectedChat } = useState();
-  const { chats, setChats } = useState();
   const accessChat = async () => {
     const res = await fetch("/api/chat/access-chat", {
       method: "POST",
@@ -12,7 +11,12 @@ function SearchCards({ userId, profilePicture, userName }) {
       body: JSON.stringify({ userId }),
     });
     const data = await res.json();
-    console.log(data);
+    if (!data.success) {
+      console.log(data.message);
+      return;
+    } else {
+      setChats((prev) => [data.results, ...prev]);
+    }
   };
   return (
     <li

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import SearchCards from "./SearchCards";
 
-function SideDrawer() {
+function SideDrawer({ setChats }) {
   const [search, setSearch] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
-
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
+  const [searchResult, setSearchResult] = useState([]);
+
   const handleSearch = async (e) => {
     e.preventDefault();
     // console.log(search);
@@ -90,19 +90,24 @@ function SideDrawer() {
             </form>
             <ul className="flex flex-col gap-3">
               <p>users found:</p>
-              {searchResult?.map((user) => (
-                <label
-                  key={user._id}
-                  htmlFor="my-drawer"
-                  className="drawer-button"
-                >
-                  <SearchCards
-                    userId={user._id}
-                    profilePicture={user.profilePicture}
-                    userName={user.userName}
-                  />
-                </label>
-              ))}
+              {searchResult && searchResult.length > 0 ? (
+                searchResult.map((user) => (
+                  <label
+                    key={user._id}
+                    htmlFor="my-drawer"
+                    className="drawer-button"
+                  >
+                    <SearchCards
+                      userId={user._id}
+                      profilePicture={user.profilePicture}
+                      userName={user.userName}
+                      setChats={setChats}
+                    />
+                  </label>
+                ))
+              ) : (
+                <p> {loading ? "Searching..." : "Search again !!"}</p>
+              )}
             </ul>
           </aside>
         </div>
@@ -110,5 +115,4 @@ function SideDrawer() {
     </div>
   );
 }
-
 export default SideDrawer;
