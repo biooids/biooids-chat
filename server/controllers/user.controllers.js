@@ -14,11 +14,12 @@ export const getUsers = async (req, res, next) => {
     const totalUsers = await User.countDocuments(filters);
 
     res.status(200).json({
+      success: true,
+      message: "users found",
       users,
       totalUsers,
     });
   } catch (error) {
-    console.error("Error in getUsers:", error);
     next(error);
   }
 };

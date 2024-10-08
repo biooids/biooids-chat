@@ -23,12 +23,12 @@ function NavBar() {
           Home
         </NavLink>
         <NavLink
-          to="generalRoom"
+          to="chat-page"
           className={({ isActive }) =>
             ` ${isActive ? "text-cyan-300 underline" : ""}`
           }
         >
-          generalRoom
+          Chat-page
         </NavLink>
 
         {currentUser ? (

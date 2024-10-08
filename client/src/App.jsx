@@ -7,10 +7,8 @@ import Auth from "./components/pages/authPage/Auth";
 import SignUp from "./components/pages/authPage/SignUp";
 import LogIn from "./components/pages/authPage/LogIn";
 
-import Testing from "./components/mainComp/Testing";
 import Authenticated from "./components/mainComp/Authenticated";
-import GeneralRoom from "./components/mainComp/GeneralRoom";
-import JoinedGeneralRoom from "./components/mainComp/JoinedGeneralRoom";
+import ChatPage from "./components/pages/chatPage/ChatPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -28,10 +26,9 @@ function App() {
             { path: "sign-up", element: <SignUp /> },
           ],
         },
-        { path: "testing", element: <Testing /> },
         {
-          element: <JoinedGeneralRoom />,
-          children: [{ path: "generalRoom", element: <GeneralRoom /> }],
+          element: <Authenticated />,
+          children: [{ path: "chat-page", element: <ChatPage /> }],
         },
 
         { path: "contact", element: <div>Contact</div> },

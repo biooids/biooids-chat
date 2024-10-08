@@ -3,8 +3,6 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 
 import ThemeProvider from "./components/mainComp/ThemeProvider.jsx";
-import { SocketProvider } from "./components/mainComp/SocketProvider.jsx";
-
 import { store, persistor } from "./app/store.js";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -16,9 +14,7 @@ createRoot(document.getElementById("root")).render(
     <PersistGate persistor={persistor}>
       <Provider store={store}>
         <ThemeProvider>
-          <SocketProvider>
-            <App />
-          </SocketProvider>
+          <App />
         </ThemeProvider>
       </Provider>
     </PersistGate>
