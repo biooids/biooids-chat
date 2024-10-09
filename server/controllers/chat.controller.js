@@ -75,36 +75,36 @@ export const fetchChats = async (req, res, next) => {
 };
 
 export const createGroup = async (req, res, next) => {
-  if (!req.body.users || !req.body.name) {
+  const { users, name } = req.body;
+  if (!users || !name) {
     return res.status(400).send({ message: "Please Fill all the feilds" });
   }
+  console.log(users);
 
-  let users = JSON.parse(req.body.users);
-
-  if (users.length < 2) {
-    next(
+  if (users.length < 3) {
+    return next(
       errorUtil(
         400,
-        "Group must have at least two users. Please select more users."
+        "Group must have at least 3 users, means two  including you. Please select more users."
       )
     );
   }
 
-  users.push(req.user);
-
   try {
     const groupChat = await Chat.create({
-      chatName: req.body.name,
+      chatName: name,
       users: users,
       isGroupChat: true,
-      groupAdmin: req.user,
+      groupAdmin: req.user.id,
     });
-
     const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
       .populate("users", "-password")
       .populate("groupAdmin", "-password");
-
-    res.status(200).json(fullGroupChat);
+    res.status(200).json({
+      success: true,
+      message: "Group Chat created successfully",
+      result: fullGroupChat,
+    });
   } catch (error) {
     next(errorUtil(500, error.message));
   }

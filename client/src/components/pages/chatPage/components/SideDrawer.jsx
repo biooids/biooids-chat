@@ -9,7 +9,6 @@ function SideDrawer({ setChats }) {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    // console.log(search);
 
     try {
       setLoading(true);

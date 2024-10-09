@@ -3,10 +3,10 @@ import SideDrawer from "./components/SideDrawer";
 import MyChats from "./components/MyChats";
 import MyChatBox from "./components/MyChatBox";
 import CreateGroup from "./components/CreateGroupChat";
+import MyGroupChats from "./components/MyGroupChats";
 
 function ChatPage() {
   const [chats, setChats] = useState([]);
-
   const fetchChats = async () => {
     try {
       const res = await fetch("/api/chat/fetch-chats");
@@ -28,25 +28,20 @@ function ChatPage() {
     <section className="w-full">
       <SideDrawer setChats={setChats} />
       <section className="grid grid-cols-2 gap-3 ">
-        <ul className="flex flex-col gap-3 bg-white bg-opacity-5 p-3">
-          <div className="flex  gap-3 items-center ">
-            <p>My chats</p>
+        <section className="flex flex-col gap-3 bg-white bg-opacity-5 p-3">
+          <CreateGroup setChats={setChats} />
 
-            <CreateGroup />
-          </div>
-          {chats.length > 0 ? (
-            chats.map((chat) => (
-              <li
-                key={chat._id}
-                className="bg-white bg-opacity-5 p-3 rounded-lg flex flex-row items-center  "
-              >
-                <MyChats />
-              </li>
-            ))
-          ) : (
-            <p>No chats found.Yet !</p>
-          )}
-        </ul>
+          <ul className="flex flex-col gap-3">
+            <p>My chats :</p>
+            {chats.length > 0 ? (
+              chats.map((chat) => (
+                <MyChats key={chat._id} userName={chat.users[1].userName} />
+              ))
+            ) : (
+              <p>No chats found.Yet !</p>
+            )}
+          </ul>
+        </section>
 
         <MyChatBox />
       </section>
