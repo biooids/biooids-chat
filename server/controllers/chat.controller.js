@@ -82,9 +82,12 @@ export const createGroup = async (req, res, next) => {
   let users = JSON.parse(req.body.users);
 
   if (users.length < 2) {
-    return res
-      .status(400)
-      .send("More than 2 users are required to form a group chat");
+    next(
+      errorUtil(
+        400,
+        "Group must have at least two users. Please select more users."
+      )
+    );
   }
 
   users.push(req.user);
