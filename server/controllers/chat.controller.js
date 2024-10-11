@@ -110,6 +110,61 @@ export const createGroup = async (req, res, next) => {
   }
 };
 
+export const updateGroup = async (req, res, next) => {
+  const { groupId, users, name } = req.body;
+  if (!groupId || (!users && !name)) {
+    return next(
+      errorUtil(
+        400,
+        "Please provide group Id and at least one user or group name"
+      )
+    );
+  }
+
+  try {
+    // Find the group by ID
+    const groupChat = await Chat.findById(groupId);
+    if (!groupChat) {
+      return res.status(404).send({ message: "Group not found" });
+    }
+
+    // Ensure the user making the request is the group admin
+    if (groupChat.groupAdmin.toString() !== req.user.id) {
+      return res
+        .status(403)
+        .send({ message: "Only the group admin can update the group" });
+    }
+
+    // Update group details if provided
+    if (name) groupChat.chatName = name;
+    if (users && users.length >= 3) {
+      groupChat.users = users;
+    } else if (users) {
+      return next(
+        errorUtil(
+          400,
+          "Group must have at least 3 users, including you. Please select more users."
+        )
+      );
+    }
+
+    // Save updated group
+    await groupChat.save();
+
+    const updatedGroupChat = await Chat.findOne({ _id: groupChat._id })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    res.status(200).json({
+      success: true,
+      message: "Group Chat updated successfully",
+      result: updatedGroupChat,
+    });
+  } catch (error) {
+    next(errorUtil(500, error.message));
+  }
+};
+
 export const renameGroup = async (req, res, next) => {
   const { chatId, chatName } = req.body;
 
@@ -152,7 +207,11 @@ export const addToGroup = async (req, res, next) => {
   if (!added) {
     next(errorUtil(404, "Chat Not Found"));
   } else {
-    res.json(added);
+    res.json({
+      success: true,
+      message: "User added to group successfully",
+      result: added,
+    });
   }
 };
 

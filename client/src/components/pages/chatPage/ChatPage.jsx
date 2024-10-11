@@ -7,6 +7,7 @@ import MyGroupChats from "./components/MyGroupChats";
 
 function ChatPage() {
   const [chats, setChats] = useState([]);
+  const [chat, setChat] = useState({});
   const fetchChats = async () => {
     try {
       const res = await fetch("/api/chat/fetch-chats");
@@ -24,6 +25,10 @@ function ChatPage() {
   useEffect(() => {
     fetchChats();
   }, []);
+
+  const chatContent = (content) => {
+    setChat(content);
+  };
   return (
     <section className="w-full">
       <SideDrawer setChats={setChats} />
@@ -35,7 +40,9 @@ function ChatPage() {
             <p>My chats :</p>
             {chats.length > 0 ? (
               chats.map((chat) => (
-                <MyChats key={chat._id} userName={chat.users[1].userName} />
+                <li key={chat._id} onClick={() => chatContent(chat)}>
+                  <MyChats userName={chat.chatName} />
+                </li>
               ))
             ) : (
               <p>No chats found.Yet !</p>
@@ -43,7 +50,7 @@ function ChatPage() {
           </ul>
         </section>
 
-        <MyChatBox />
+        <MyChatBox chat={chat} />
       </section>
     </section>
   );
