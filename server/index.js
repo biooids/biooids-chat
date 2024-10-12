@@ -6,11 +6,11 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
 import { Server } from "socket.io";
-import { joinTestingRoom } from "./config/socket/socket.js";
 
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
+import messageRoutes from "./routes/message.routes.js";
 
 dotenv.config();
 const app = express();
@@ -24,6 +24,7 @@ connectMongoDB();
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/message", messageRoutes);
 
 //error middle ware
 app.use(errorMiddleWare);
@@ -34,7 +35,7 @@ const server = app.listen(PORT, () => {
   console.log(`Server is running at http://${host}:${port}`);
 });
 
-export const io = new Server(server, {
+const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
     methods: ["GET", "POST"],
@@ -44,9 +45,6 @@ export const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
-
-  joinTestingRoom(socket, io);
-  // sendMessage(socket, io);
 
   socket.on("disconnect", () => {
     console.log(`User disconnected: ${socket.id}`);
