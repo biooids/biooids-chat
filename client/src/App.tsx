@@ -8,6 +8,18 @@ function App() {
   const [roomStatus, setRoomStatus] = useState([]);
   const hasJoinedRoom = useRef(false);
 
+  const storeGeneralRoomMessage = async (generalRoomMessage: string) => {
+    const result = await fetch("/api/generalRoom/storeGeneralRoomMessage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ generalRoomMessage }),
+    });
+    const data = await result.json();
+    console.log(data);
+  };
+
   useEffect(() => {
     socket.emit("messageForServer", "Hello, server!");
 
@@ -23,6 +35,8 @@ function App() {
 
     socket.on("roomStatus", (data) => {
       setRoomStatus((previous) => [...previous, data]);
+
+      storeGeneralRoomMessage(data);
     });
 
     return () => {

@@ -11,7 +11,7 @@ export const storeGeneralRoomMessage = async (
 
   try {
     const updateGeneralRoom = new GeneralRoom({
-      generalRoomMessage: generalRoomMessage,
+      generalRoomMessage,
     });
     const updatedGeneralRoom = await updateGeneralRoom.save();
     res.status(201).json({

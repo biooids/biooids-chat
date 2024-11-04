@@ -4,8 +4,8 @@ import { Server } from "socket.io";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-
 import generalRoomRoutes from "./routes/general.room.routes";
+import { handleSocketConnection } from "./sockets/socket.handlers";
 
 dotenv.config();
 const app = express();
@@ -29,9 +29,9 @@ mongoose
 
 app.use(express.json());
 app.use(cookieParser());
-
 app.use("/api/generalRoom", generalRoomRoutes);
 
+// Error handling middleware
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   const statusCode = error.status || 500;
   const message =
@@ -42,37 +42,38 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Replace this with the URL where Vite is running
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
   },
 });
 
-io.on("connection", (socket) => {
-  console.log("a user connected");
+handleSocketConnection(io);
 
-  socket.on("messageForServer", (data) => {
-    console.log(data);
-    socket.emit("messageForClient", {
-      messageForClient: `hello, ${socket.id}`,
-      clientName: socket.id,
-    });
-  });
+// io.on("connection", (socket) => {
+//   console.log("a user connected");
 
-  socket.on("joinGeneralRoom", (data) => {
-    console.log(data);
-    socket.join("generalRoom");
+//   socket.on("messageForServer", (data) => {
+//     console.log(data);
+//     socket.emit("messageForClient", {
+//       messageForClient: `hello, ${socket.id}`,
+//       clientName: socket.id,
+//     });
+//   });
 
-    io.to("generalRoom").emit("roomStatus", `${data} has joined the room`);
-  });
+//   socket.on("joinGeneralRoom", (data) => {
+//     console.log(data);
+//     socket.join("generalRoom");
 
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-  });
-});
+//     io.to("generalRoom").emit("roomStatus", `${data} has joined the room`);
+//   });
+
+//   socket.on("disconnect", () => {
+//     console.log("user disconnected");
+//   });
+// });
 
 server.listen(PORT, () => {
   const addressInfo = server.address();
-
   if (addressInfo && typeof addressInfo !== "string") {
     const { address, port } = addressInfo;
     console.log(`Server is listening at http://${address}:${port}`);
