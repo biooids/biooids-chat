@@ -12,9 +12,8 @@ function App() {
   const getGeneralRoomMessage = async () => {
     const result = await fetch("/api/generalRoom/getGeneralRoomMessage");
     const data = await result.json();
-    console.log("fetched data :", data);
     if (data.success) {
-      setRoomMessages((previous) => [...previous, ...data.generalRoomMessages]);
+      setRoomMessages(data.generalRoomMessages);
     } else {
       console.log(data.message);
     }
@@ -30,14 +29,12 @@ function App() {
     socket.on("messageForClient", (data) => {
       setMessageFromServer(data.messageForClient);
 
-      socket.emit("joinGeneralRoom", data.clientName);
+      if (!hasJoinedRoom) {
+        socket.emit("joinGeneralRoom", data.clientName);
+      }
     });
 
     socket.on("roomStatus", (data) => {
-      console.log("Received roomStatus event on client:", data);
-
-      // storeGeneralRoomMessage(data);
-
       setRoomMessages((previous) => [
         { generalRoomMessage: data },
         ...previous,
@@ -75,9 +72,9 @@ function App() {
     e.preventDefault();
     const result = await storeGeneralRoomMessage(userMessage);
     if (result) {
-      socket.emit("userMessageFromClient", userMessage);
+      socket.emit("userMessageFromClient", userMessage); // Emit message to the room
 
-      setUserMessage("");
+      setUserMessage(""); // Clear the input after sending
     }
   };
 

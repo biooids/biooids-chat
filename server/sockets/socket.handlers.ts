@@ -2,24 +2,31 @@ import { Server, Socket } from "socket.io";
 
 export const handleSocketConnection = (io: Server) => {
   io.on("connection", (socket: Socket) => {
-    console.log("a user connected");
+    console.log("A user connected");
 
     socket.on("messageForServer", (data) => {
-      console.log(data);
+      console.log("Message received from client:", data);
       socket.emit("messageForClient", {
-        messageForClient: `hello, ${socket.id}`,
+        messageForClient: `Hello, ${socket.id}`,
         clientName: socket.id,
       });
     });
 
     socket.on("joinGeneralRoom", (data) => {
-      console.log(data);
+      console.log(`${data} is joining the room`);
       socket.join("generalRoom");
+
+      // Emit room status message to everyone in the generalRoom
       io.to("generalRoom").emit("roomStatus", `${data} has joined the room`);
     });
 
+    socket.on("userMessageFromClient", (data) => {
+      console.log("Received user message:", data);
+      io.to("generalRoom").emit("userMessageFromServer", data);
+    });
+
     socket.on("disconnect", () => {
-      console.log("user disconnected");
+      console.log("User disconnected");
     });
   });
 };
