@@ -17,7 +17,10 @@ export const handleSocketConnection = (io: Server) => {
       socket.join("generalRoom");
 
       // Emit room status message to everyone in the generalRoom
-      io.to("generalRoom").emit("roomStatus", `${data} has joined the room`);
+      io.to("generalRoom").emit(
+        "joinedGeneralRoom",
+        `${data} has joined the room`
+      );
     });
 
     socket.on("userMessageFromClient", (data) => {
