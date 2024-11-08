@@ -10,9 +10,9 @@ const SocketContext = createContext(socket);
 
 export const useSocket = () => useContext(SocketContext);
 
-interface SocketProviderProps {
+type SocketProviderProps = {
   children: ReactNode;
-}
+};
 
 export const SocketProvider = ({ children }: SocketProviderProps) => {
   useEffect(() => {

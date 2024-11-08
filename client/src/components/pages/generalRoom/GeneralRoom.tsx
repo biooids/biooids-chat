@@ -1,11 +1,12 @@
-//@ts-nocheck
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useSocket } from "../../../components/mainComp/SocketContext";
+
+type RoomMessage = { generalRoomMessage: string };
 
 function GeneralRoom() {
   const socket = useSocket();
   const [messageFromServer, setMessageFromServer] = useState("");
-  const [roomMessages, setRoomMessages] = useState([]);
+  const [roomMessages, setRoomMessages] = useState<RoomMessage[]>([]);
   const [userMessage, setUserMessage] = useState("");
 
   const getGeneralRoomMessage = async () => {
@@ -45,14 +46,27 @@ function GeneralRoom() {
       ]);
     });
 
+    socket.on("leftGeneralRoom", (message) => {
+      storeGeneralRoomMessage(message);
+
+      setRoomMessages((previous) => [
+        { generalRoomMessage: message },
+        ...previous,
+      ]);
+    });
+
     return () => {
+      socket.emit("leaveGeneralRoom");
+
       socket.off("joinedGeneralRoom");
+      socket.off("leftGeneralRoom");
+
       socket.off("messageForClient");
       socket.off("userMessageFromServer");
     };
   }, [socket]);
 
-  const storeGeneralRoomMessage = async (generalRoomMessage) => {
+  const storeGeneralRoomMessage = async (generalRoomMessage: string) => {
     const result = await fetch("/api/generalRoom/storeGeneralRoomMessage", {
       method: "POST",
       headers: {
@@ -65,7 +79,7 @@ function GeneralRoom() {
     return data.success;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const result = await storeGeneralRoomMessage(userMessage);
     if (result) {
